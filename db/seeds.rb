@@ -1,6 +1,19 @@
 if Spree::Product.gift_cards.count == 0
   puts "\tCreating default gift card..."
   shipping_category = Spree::ShippingCategory.create(name: 'Gift Card')
+
+  method = Spree::ShippingMethod.new(name: "Email Delivery")
+  method.shipping_categories << shipping_category
+  method.calculator = Spree::Calculator::Shipping::FlatRate.new(
+    preferences: {
+      amount: 0.0,
+      currency: "GBP",
+    }
+  )
+  method.zones << Spree::Zone.all
+
+  method.save
+
   product = Spree::Product.new(available_on: Time.now, name: "Gift Card", is_gift_card: true, slug: 'gift-card', price: 0, shipping_category_id: shipping_category.id)
   option_type = Spree::OptionType.new(name: "is-gift-card", presentation: "Value")
   product.option_types << option_type

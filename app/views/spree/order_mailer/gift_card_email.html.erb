@@ -1,3 +1,5 @@
 <p>Hi <%= @gift_card.name %>,</p>
+<p>You've been sent a gift card by <%= @gift_card.sender_name %>!</p>
 <p><%= @gift_card.note %></p>
 <p>To use your <%= number_to_currency @gift_card.price %> Gift Card enter the following Gift Code during checkout: <%= @gift_card.code %></p>
+<p>Thanks!</p>

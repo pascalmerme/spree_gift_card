@@ -21,10 +21,11 @@ if Spree::Product.gift_cards.count == 0
   product = Spree::Product.new(available_on: Time.now, name: "Gift Card", is_gift_card: true, slug: 'gift-card', price: 0, shipping_category_id: shipping_category.id)
 
   option_type = Spree::OptionType.create_with(name: "is-gift-card", presentation: "Value").find_or_create_by(name: "is-gift-card")
+
   product.option_types << option_type
   [5, 10, 20, 30, 50, 100, 200, 500].each do |value|
-    option_value = Spree::OptionValue.create_with(presentation: "$#{value}").find_or_create_by(name: value.to_s)
-    option_value.option_type = option_type
+    option_value = Spree::OptionValue.create_with(presentation: "$#{value}", option_type: option_type).find_or_create_by(name: value.to_s)
+
     opts = { price: value.to_i, sku: "GIFTCERT#{value}" }
     variant = Spree::Variant.new(opts)
 

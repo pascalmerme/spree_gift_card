@@ -20,6 +20,10 @@ module Spree
     before_validation :set_calculator, on: :create
     before_validation :set_values, on: :create
 
+    scope :ready_for_release, lambda { where(ready_for_release: true) }
+    # note send_at and sent_at
+    scope :due_for_delivery, lambda { ready_for_release.where(sent_at: nil).where("send_at < ?", Time.now) }
+
     include Spree::CalculatedAdjustments
 
     def apply(order)
@@ -36,6 +40,23 @@ module Spree
           )
 
       order.update!
+    end
+
+    def release!
+      update_attribute(:ready_for_release, true)
+
+      deliver! unless queued_for_later?
+    end
+
+    def deliver!
+      raise "Not ready for release -- has this card been paid for?" unless ready_for_release?
+
+      Spree::OrderMailer.gift_card_email(gift_card.id, order).deliver
+      update_attribute(:sent_at, Time.now)
+    end
+
+    def queued_for_later?
+      send_method == "delayed"
     end
 
     # Calculate the amount to be used when creating an adjustment

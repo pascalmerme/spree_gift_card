@@ -3,7 +3,7 @@ Spree::Payment.class_eval do
 
   def send_gift_card
     order.line_items.each do |li|
-      gift_card.release! if li.gift_card
+      li.gift_card.release!(order) if li.gift_card
     end
   end
 end

@@ -22,7 +22,7 @@ module Spree
 
     scope :ready_for_release, lambda { where(ready_for_release: true) }
     # note send_at and sent_at
-    scope :due_for_delivery, lambda { ready_for_release.where(sent_at: nil).where("send_at < ?", Time.now) }
+    scope :due_for_delivery, lambda { ready_for_release.where(sent_at: nil).where("send_at < ?", Time.zone.now) }
 
     include Spree::CalculatedAdjustments
 
@@ -42,17 +42,17 @@ module Spree
       order.update!
     end
 
-    def release!
+    def release!(order)
       update_attribute(:ready_for_release, true)
 
-      deliver! unless queued_for_later?
+      deliver!(order) unless queued_for_later?
     end
 
-    def deliver!
-      raise "Not ready for release -- has this card been paid for?" unless ready_for_release?
+    def deliver!(order)
+      raise "Not ready for delivery -- has this card been paid for?" unless ready_for_release?
 
-      Spree::OrderMailer.gift_card_email(gift_card.id, order).deliver
-      update_attribute(:sent_at, Time.now)
+      Spree::OrderMailer.gift_card_email(id, order).deliver
+      update_attribute(:sent_at, Time.zone.now)
     end
 
     def queued_for_later?

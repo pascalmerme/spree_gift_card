@@ -25,7 +25,7 @@ module Spree
           # see https://github.com/spree/spree/blob/master/core/app/models/spree/order_contents.rb#L37
           order.contents.add(@gift_card.variant,1)
           # order.update_totals
-          order.save!
+          # order.save!  - order.contents.add will save it for us
           # Save gift card
           @gift_card.line_item = line_item
           @gift_card.save!

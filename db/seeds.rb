@@ -24,7 +24,7 @@ if Spree::Product.gift_cards.count == 0
 
   product.option_types << option_type
   [5, 10, 20, 30, 50, 100, 200, 500].each do |value|
-    option_value = Spree::OptionValue.create_with(presentation: "$#{value}", option_type: option_type).find_or_create_by(name: value.to_s)
+    option_value = Spree::OptionValue.create_with(presentation: "£#{value}", option_type: option_type).find_or_create_by(name: value.to_s)
 
     opts = { price: value.to_i, sku: "GIFTCERT#{value}" }
     variant = Spree::Variant.new(opts)

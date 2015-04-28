@@ -12,4 +12,5 @@ spec/test_app
 spec/dummy
 Gemfile.lock
 coverage
-.sass-cache
+.sass-cache.
+spree_gift_card.iml

@@ -13,7 +13,7 @@ module Spree
           @gift_card = GiftCard.new(gift_card_params)
           @gift_card.save!
           # Create line item
-          line_item = LineItem.new
+          line_item = LineItem.new(quantity: 1)
           line_item.gift_card = @gift_card
           line_item.variant = @gift_card.variant
           line_item.price = @gift_card.variant.price
@@ -21,11 +21,8 @@ module Spree
           order = current_order(create_order_if_necessary: true)
           order.line_items << line_item
           line_item.order=order
-          # by do this it triggers the cart to update including the line count
-          # see https://github.com/spree/spree/blob/master/core/app/models/spree/order_contents.rb#L37
-          order.contents.add(@gift_card.variant,1)
-          # order.update_totals
-          # order.save!  - order.contents.add will save it for us
+          order.update_totals
+          order.save!
           # Save gift card
           @gift_card.line_item = line_item
           @gift_card.save!

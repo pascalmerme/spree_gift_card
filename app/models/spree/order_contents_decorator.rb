@@ -1,6 +1,6 @@
 Spree::OrderContents.class_eval do
 
-  durably_decorate :grab_line_item_by_variant, mode: 'soft', sha: '173bcb9f7515b32b2ad34c3ce4a31a004db96f20' do |variant, *args|
+  durably_decorate :grab_line_item_by_variant, mode: 'soft', sha: '31cfbf0d00135aad304c5f8131593e0f37964543' do |variant, *args|
     raise_error = args[0] || false
 
     if variant.product.is_gift_card?

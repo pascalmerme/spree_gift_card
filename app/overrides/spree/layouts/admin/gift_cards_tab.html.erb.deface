@@ -1,4 +1,6 @@
-<!-- insert_bottom "[data-hook='admin_tabs'], #main-sidebar" -->
+<!-- insert_bottom "[data-hook='admin_tabs'], #main-sidebar" 
+      original "fe59e93696d1ff1c3d24664cdf404c4189f80a22" 
+  -->
 
 <% if can? :admin, Spree::GiftCard %>
   <ul class="nav nav-sidebar">

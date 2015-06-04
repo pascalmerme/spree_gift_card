@@ -1,5 +1,7 @@
-<!-- insert_bottom "[data-hook='admin_tabs'], #admin_tabs[data-hook]"
-     enabled
-     original 'fc9c9d3ac8a3ce2ae5deb141d683fde887e4ff75' -->
+<!-- insert_bottom "[data-hook='admin_tabs'], #main-sidebar" -->
 
-<%= tab(:gift_cards, :url => spree.admin_gift_cards_path) %>
+<% if can? :admin, Spree::GiftCard %>
+  <ul class="nav nav-sidebar">
+    <%= tab Spree.t(:gift_cards), icon: 'credit-card', url: spree.admin_gift_cards_path %>
+  </ul>
+<% end %>

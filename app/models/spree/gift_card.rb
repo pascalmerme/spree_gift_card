@@ -67,7 +67,11 @@ module Spree
 
     def generate_code
       until self.code.present? && self.class.where(code: self.code).count == 0
-        self.code = Digest::SHA1.hexdigest([Time.now, rand].join)
+        # Random, unguessable number as a base20 string
+        raw_string = SecureRandom.random_number( 2**80 ).to_s( 20 ).reverse # e.g. "3ecg4f2f3d2ei0236gi"
+        long_code = raw_string.tr( '0123456789abcdefghij', '234679QWERTYUPADFGHX' ) # e.g. "6AUF7D4D6P4AH246QFH"
+        short_code = long_code[0..3] + '-' + long_code[4..7] + '-' + long_code[8..11] # e.g. "6AUF-7D4D-6P4A"
+        self.code = short_code
       end
     end
 
